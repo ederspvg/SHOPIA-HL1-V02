@@ -1,0 +1,9 @@
+ambiente.env
+ambiente/
+ambiente_bkp/
+*.env
+api/
+api/gmail/
+biblioteca_geral/*.*
+chroma_db/*.*
+manuais/*.*
