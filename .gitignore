@@ -5,5 +5,8 @@ ambiente_bkp/
 api/
 api/gmail/
 biblioteca_geral/*.*
+chroma_db/
 chroma_db/*.*
 manuais/*.*
+temp_rag_uploads/*.*
+protheus_custom/*.*
