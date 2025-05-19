@@ -4,6 +4,7 @@ ambiente_bkp/
 *.env
 api/
 api/gmail/
+biblioteca_geral/
 biblioteca_geral/*.*
 chroma_db/
 chroma_db/*.*
