@@ -1,0 +1,183 @@
+Okay, entendido. Analisarei os tickets fornecidos com base nas descrições e no meu conhecimento como especialista em Protheus para auxiliar a equipe de Helpdesk da Luft. Vou priorizar os chamados e apresentar a análise e as orientações para cada um, focando em como o analista de TI pode atuar no sistema.
+
+Segue a análise e as orientações, ordenadas por prioridade:
+
+---
+
+### Análise de Tickets do Helpdesk - Protheus
+
+Abaixo estão os relatórios dos tickets analisados, ordenados pela prioridade sugerida para o atendimento pela equipe de Helpdesk.
+
+---
+
+### **Ticket Prioridade 1 - SLA Crítico**
+
+> **ID do Ticket:** 6917
+> **Nome do Usuário:** milena.silva
+> **Localização do Usuário:** Barueri - São Paulo - Brasil
+> **Departamento do Usuário:** Contas a Receber
+> **Dados de Contato do Usuário:** Fone: 1147724239 Ramal: 4239 Email: milena.silva@luftagro.com.br
+> **Assunto do Ticket:** Solicitação ND - Modulo Compras
+> **Breve resumo do Ticket:** A usuária reporta que, ao emitir Notas de Débito (ND) no módulo de Compras, as informações da conta bancária inseridas previamente aparecem incompletas no campo de observação do documento emitido. Ela suspeita que o problema pode estar relacionado à quantidade de caracteres permitidos.
+
+---
+
+**Orientação para o Analista de TI:**
+
+**Resumo do Problema:** O problema relatado indica uma possível truncagem de dados (informações da conta bancária) que são inseridos em algum campo durante a solicitação/emissão da Nota de Débito e que são exibidos no campo de observação do documento final. A hipótese do usuário sobre a limitação de caracteres é pertinente e provável para este tipo de sintoma no Protheus.
+
+**Análise e Passo a Passo para o Analista:**
+
+1.  **Identificar as Rotinas Envolvidas:** O ticket menciona "Solicitações de Notas de Débito (ND) no Módulo Compras". No Protheus (Módulo 2 - Compras), a rotina para emissão de Notas de Débito geralmente envolve o processo de Documentos de Entrada (se for uma ND de fornecedor) ou pode ser uma rotina específica dependendo da implementação. É crucial confirmar com a usuária Milena Silva *qual a rotina exata* e *qual campo* ela utiliza para inserir os dados da conta bancária durante o processo.
+2.  **Verificar o Campo de Entrada da Conta Bancária:** Uma vez identificada a rotina e o campo onde a usuária insere as informações bancárias, o analista deve acessar o **Configurador (SIGACFG)**.
+    *   Navegar até `Ambiente > Dicionário > Base de Dados`.
+    *   Identificar a tabela e o campo correspondente à entrada da informação bancária na rotina de ND. Se a usuária souber o nome do campo na tela, isso facilita a busca no dicionário.
+    *   Consultar a definição deste campo na tabela **SX3 (Campos)**. Verificar o tipo (`Tipo`) e, principalmente, o tamanho (`Tam.`) definido para ele.
+3.  **Verificar o Campo de Observação na Nota de Débito Emitida:** É necessário também verificar o campo onde essa informação *aparece* incompleta na Nota de Débito emitida. Este campo é provavelmente um campo de observação ou complemento na tabela principal que armazena os dados das NDs emitidas (dependendo da rotina, pode ser uma tabela do Contas a Pagar/Receber ou uma tabela específica).
+    *   Identificar a tabela e o campo de observação na estrutura da Nota de Débito final.
+    *   Consultar a definição deste campo na tabela **SX3 (Campos)**. Verificar o tipo (`Tipo`) e o tamanho (`Tam.`) definido para ele.
+4.  **Comparar Tamanhos e Fluxo de Dados:**
+    *   Se o campo de *entrada* da informação bancária tiver um tamanho maior do que o campo de *observação* onde ela é exibida, a truncagem ocorre no momento da cópia ou gravação da informação para o campo menor.
+    *   Se ambos os campos tiverem tamanhos limitados (menores que o texto completo da conta bancária), a limitação pode estar em qualquer um deles, ou na rotina que transfere a informação.
+5.  **Ações Corretivas (Baseado no Contexto e Assumindo Limitação de Campo):**
+    *   **Verificar Parâmetros:** Consultar no **Configurador (SIGACFG)**, em `Ambiente > Parâmetros`, se existem parâmetros específicos que controlam o tamanho ou o comportamento de campos de observação/complemento em rotinas de Documentos de Entrada ou NDs. *Sem a Base de Conhecimento fornecida, não é possível citar parâmetros específicos, mas o analista deve procurar por parâmetros relacionados a "observação", "complemento", "tamanho campo", "ND", "documento entrada" neste contexto.*
+    *   **Ajuste no Dicionário (SX3):** **Cuidado:** Ajustar o tamanho de campos no dicionário de dados (SX3) é uma alteração estrutural. Se a limitação estiver no campo de *entrada* e ele for um campo padrão do Protheus com um tamanho fixo esperado pelas rotinas, aumentar seu tamanho pode requerer análise de impacto e possível desenvolvimento. Se a limitação estiver no campo de *observação* e este for um campo que *pode* ter seu tamanho aumentado (alguns campos de observação padrão ou campos específicos para este fim permitem isso), o analista pode tentar aumentar o tamanho (`Tam.`) na SX3 e rodar um `UPDISTR` ou `UPDSX` para atualizar a base. **Esta ação só deve ser feita após análise e, se necessário, seguir a orientação do fabricante (TOTVS) para alteração de tamanho de campos padrão.**
+    *   **Identificar Necessidade de Customização:** Se o tamanho dos campos padrão já estiver no máximo permitido ou se a lógica de cópia estiver truncando a informação antes de gravar, e não houver parâmetro que controle isso, o problema pode exigir uma customização (desenvolvimento) para ajustar a rotina de emissão da ND ou a lógica de gravação/exibição do campo de observação.
+
+**Como Esclarecer a Dúvida para o Usuário (pelo Analista):**
+
+O analista deve explicar à Milena que o problema parece ser uma limitação no espaço disponível para as informações bancárias em um ou mais campos utilizados pelo Protheus. Ele deve informá-la sobre qual campo ou campos foram identificados como fonte da limitação (o de entrada ou o de observação na saída). O analista deve explicar os próximos passos técnicos (verificação de parâmetros, análise de ajuste no dicionário ou necessidade de desenvolvimento) e o prazo estimado para uma solução definitiva. Se for necessário desenvolvimento, explicar que o ticket será encaminhado para a equipe responsável por customizações.
+
+---
+
+### **Ticket Prioridade 2 - Erro Funcional Bloqueante**
+
+> **ID do Ticket:** 6648
+> **Nome do Usuário:** lucas.soares
+> **Localização do Usuário:** (Não informado)
+> **Departamento do Usuário:** Contabilidade
+> **Dados de Contato do Usuário:** Fone: (Não informado) Ramal: 2860 Email: lucas.soares
+> **Assunto do Ticket:** Erro Baixa de Ativo
+> **Breve resumo do Ticket:** O usuário Lucas Soares reporta um erro ao tentar realizar a baixa de um item do Ativo Fixo. O sistema exibe uma mensagem indicando que "não foi baixado 100% em todos os itens", mesmo ele garantindo que preencheu todos os campos de percentual.
+
+---
+
+**Orientação para o Analista de TI:**
+
+**Resumo do Problema:** O usuário está encontrando um impedimento no módulo de Ativo Fixo (ATF) ao tentar realizar a baixa de um bem. A mensagem de erro sugere que o sistema não reconhece a baixa como 100% do valor ou saldo do ativo, apesar da informação de percentual inserida pelo usuário na rotina. Isso geralmente ocorre quando há uma divergência entre o valor contábil/atual do ativo e o valor que a rotina de baixa está tentando processar, ou quando a base de cálculo para a baixa (Valor Original - Depreciação Acumulada) não permite a baixa integral por algum motivo (ex: valor residual, diferença de centavos, depreciação não totalmente processada).
+
+**Análise e Passo a Passo para o Analista:**
+
+1.  **Identificar o Ativo Específico:** O primeiro passo é obter do Lucas Soares o *código* ou a *descrição* exata do ativo para o qual ele está tentando realizar a baixa.
+2.  **Acessar os Dados do Ativo:** No Protheus, acessar o módulo de **Ativo Fixo (ATF)**.
+    *   Navegar até a rotina de **Atualizações > Bens**.
+    *   Pesquisar e selecionar o ativo reportado pelo usuário.
+3.  **Analisar Dados Financeiros do Ativo:** Ao visualizar os detalhes do ativo, o analista deve verificar os seguintes campos na tabela **SN7 (Bens)**:
+    *   `N7_VORIG` (Valor Original)
+    *   `N7_DEPRAC` (Depreciação Acumulada)
+    *   `N7_VLATUA` (Valor Atual - geralmente N7_VORIG - N7_DEPRAC)
+    *   `N7_ULDDEPR` (Data da Última Depreciação)
+    *   `N7_INDICA` (Indicador de Situação do Ativo)
+    *   `N7_TIPCAL` (Tipo de Cálculo da Depreciação)
+    *   `N7_VRESID` (Valor Residual, se aplicável)
+4.  **Verificar Histórico de Movimentações e Cálculos:**
+    *   Acessar a opção de `Movimentações` (tabela **SN8**) dentro do cadastro do bem para verificar se houve lançamentos manuais, ajustes, ou outras movimentações que possam ter afetado o valor ou a depreciação do ativo de forma inesperada.
+    *   Acessar a opção de `Histórico de Cálculo` (tabela **SN9**, se a rotina estiver ativa) para revisar como a depreciação foi calculada ao longo do tempo e confirmar se ela está completa até a data da baixa.
+5.  **Validar o Processo de Baixa:**
+    *   Confirmar com o usuário a *data* exata em que ele está tentando realizar a baixa.
+    *   Verificar se a depreciação (`Ativo Fixo > Miscelânea > Cálculo Depreciação`) foi executada e contabilizada para o ativo em questão até o período/data da baixa. Se a depreciação não estiver em dia, o Valor Atual (N7_VLATUA) pode ainda conter um saldo a depreciar, impedindo a baixa de 100% do valor *líquido*.
+    *   Verificar se o tipo de cálculo (`N7_TIPCAL`) ou algum parâmetro relacionado à depreciação ou baixa força a manutenção de um Valor Residual (`N7_VRESID`), o que impediria a baixa de 100% do *Valor Original*. A baixa de 100% geralmente se refere à baixa do *Valor Atual* (Valor Original - Depreciação Acumulada - Residual).
+    *   Acessar a rotina de `Baixas` (`Ativo Fixo > Movimentações > Baixas`) e simular o processo com os dados fornecidos pelo usuário para reproduzir o erro e entender o comportamento do sistema.
+6.  **Verificar Parâmetros Relevantes:** No **Configurador (SIGACFG)**, em `Ambiente > Parâmetros`, procurar por parâmetros que influenciem o cálculo da baixa, depreciação ou validações na rotina de baixa do ativo fixo. *Sem a Base de Conhecimento, não é possível citar parâmetros específicos, mas o analista deve procurar por parâmetros relacionados a "ativo", "baixa", "depreciação", "residual", "percentual baixa", "arredondamento".*
+
+**Ações Corretivas Possíveis (dependendo da causa identificada):**
+
+*   **Executar Depreciação:** Se a depreciação não estiver em dia, orientar o usuário (ou executar, se for o caso) a rodar o cálculo e a contabilização da depreciação até a data da baixa.
+*   **Ajuste de Valor:** Se houver uma pequena diferença de centavos ou um valor residual inesperado que impeça a baixa total do Valor Atual, pode ser necessário realizar um lançamento manual de ajuste (na SN8) para zerar o Valor Atual antes da baixa, *desde que este procedimento esteja alinhado com as regras contábeis da empresa*.
+*   **Verificar Configuração:** Se um Valor Residual (N7_VRESID) estiver configurado e a regra da empresa for baixar 100% do valor depreciável, a configuração do ativo ou os parâmetros podem precisar de revisão.
+
+**Como Esclarecer a Dúvida para o Usuário (pelo Analista):**
+
+Explicar ao Lucas que a mensagem "não foi baixado 100%" indica que o sistema identificou um saldo remanescente no valor contábil do ativo (Valor Atual - Valor Residual) que impede a baixa total esperada. Explicar o que foi verificado (status da depreciação, valor residual, histórico de movimentos) e qual a causa identificada (ex: falta de depreciação, valor residual configurado, etc.). Orientar sobre os próximos passos (rodar depreciação, ajuste manual, revisão de configuração) para que ele possa prosseguir com a baixa.
+
+---
+
+### **Ticket Prioridade 3 - Solicitação de Melhoria/Automação**
+
+> **ID do Ticket:** 6627
+> **Nome do Usuário:** milena.silva
+> **Localização do Usuário:** Barueri - São Paulo - Brasil
+> **Departamento do Usuário:** Contas a Receber
+> **Dados de Contato do Usuário:** Fone: 1147724239 Ramal: 4239 Email: milena.silva@luftagro.com.br
+> **Assunto do Ticket:** ENVIO PADRÃO CAPA DE FATURA - CLIENTE BRAVO
+> **Breve resumo do Ticket:** A usuária Milena Silva solicita a customização (automação) do processo de envio semanal (toda segunda-feira) das "capas de faturas" para o cliente BRAVO SERVIÇOS. Atualmente, o processo é manual, o que aumenta o risco de erros e demanda tempo. O anexo detalha um exemplo de fatura para este cliente.
+
+---
+
+**Orientação para o Analista de TI:**
+
+**Resumo do Problema:** Esta é uma solicitação de automação para uma tarefa manual recorrente no módulo de Contas a Receber (FIN). A usuária deseja que o Protheus gere e envie automaticamente (por email) as capas de faturas para um cliente específico, seguindo uma frequência (semanal) e uma nomenclatura de arquivo específica. O anexo fornece o contexto do *conteúdo* da capa de fatura (detalhes da fatura/duplicata e dos CTRCs/NFs relacionados).
+
+**Análise e Passo a Passo para o Analista:**
+
+1.  **Entender o Requisito Completo:** O analista deve entrar em contato com a usuária Milena para detalhar o requisito:
+    *   **Formato da "Capa de Fatura":** O anexo mostra o *conteúdo*. O analista precisa entender se existe um relatório padrão no Protheus que já gere essa "capa" no formato desejado ou se é um relatório customizado existente. Qual o nome do relatório ou rotina utilizada manualmente?
+    *   **Nomenclatura do Arquivo:** Qual a "nomenclatura específica" exata que o arquivo (provavelmente PDF) deve seguir? (Ex: FATURA\_[NUMERO\_FATURA]\_[CLIENTE]\_[DATA].PDF).
+    *   **Destinatário:** Para qual(is) endereço(s) de e-mail os arquivos devem ser enviados?
+    *   **Frequência:** O envio é sempre na segunda-feira? Em qual horário? Para quais faturas/período? (Ex: faturas emitidas na semana anterior, faturas com vencimento na semana atual, etc.).
+2.  **Avaliar Soluções Padrão no Protheus (Módulo FIN - Contas a Receber):**
+    *   **Relatórios Padrão:** Verificar se a rotina de `Relatórios` ou `Extratos` em Contas a Receber possui alguma opção que gere a "capa de fatura" no formato desejado, filtrando por cliente (BRAVO SERVIÇOS) e período.
+    *   **Funcionalidade de Envio por Email:** O Protheus possui funcionalidades de envio de relatórios por email, muitas vezes associadas às rotinas de impressão/geração. Verificar se o relatório ou rotina identificada no passo anterior tem a opção de enviar por email. Configurar os parâmetros de e-mail (`MV_REMETEN`, `MV_SMTP`, etc.) no Configurador (SIGACFG) se ainda não estiverem configurados.
+    *   **Agendamento/Schedule:** Verificar a possibilidade de agendar a execução da rotina de geração do relatório/envio de e-mail usando a ferramenta de Schedule/Agendamento do Protheus (`Ambiente > Schedule > Agendamento`). É possível agendar rotinas para rodarem periodicamente (ex: semanalmente), mas a capacidade de configurar filtros específicos (por cliente), nomenclatura de arquivo customizada e múltiplos destinatários pode variar.
+3.  **Identificar Gaps e Necessidade de Customização:**
+    *   É comum que a "nomenclatura específica" e o envio automatizado para múltiplos destinatários com filtros complexos *não* sejam totalmente atendidos por rotinas padrão.
+    *   Se o relatório padrão não existe ou não tem o formato desejado, será necessário desenvolver um relatório customizado.
+    *   Se as funcionalidades de agendamento e envio de e-mail padrão não permitem a configuração da nomenclatura e dos destinatários conforme solicitado, será necessário desenvolver uma rotina específica para isso (geralmente um *job* em AdvPL que executa o relatório, salva o arquivo com a nomenclatura correta e envia o email).
+
+**Conclusão para o Analista (Baseado no Contexto):**
+
+Com base na descrição do ticket ("customização do processo", "envio é realizado manualmente", "seguindo uma nomenclatura específica"), é altamente provável que esta solicitação *não possa ser atendida integralmente com funcionalidades padrão* do Protheus. A geração da "capa de fatura" pode até existir como um relatório padrão ou customizado simples, mas a automação completa do processo de **geração programada + nomenclatura específica do arquivo + envio automático por e-mail para destinatário(s) fixo(s)** geralmente requer desenvolvimento (uma customização).
+
+**Como Esclarecer a Dúvida para o Usuário (pelo Analista):**
+
+Explicar à Milena que a solicitação dela para automação do envio das capas de faturas é compreendida. Informar que, após análise inicial, as funcionalidades padrão do Protheus podem não ser suficientes para atender a todos os requisitos (especialmente a nomenclatura específica e a automação completa do envio programado). Explicar que este tipo de automação geralmente envolve desenvolvimento (customização) e que o ticket será encaminhado para a equipe responsável por avaliar e orçar projetos de customização, ou para um especialista em desenvolvimento para análise técnica mais aprofundada. Confirmar todos os detalhes do requisito (formato, nomenclatura, destinatário, frequência) para que a análise de customização seja precisa.
+
+---
+
+### **Ticket Prioridade 4 - Acesso**
+
+> **ID do Ticket:** 6922
+> **Nome do Usuário:** rosangela.cruz
+> **Localização do Usuário:** (Não informado)
+> **Departamento do Usuário:** Manutenção
+> **Dados de Contato do Usuário:** Fone: (11) 99705-4999 Ramal: 3830 Email: rosangela.cruz@luft.com.br
+> **Assunto do Ticket:** Liberação de acesso para usuário no módulo 2 compras
+> **Breve resumo do Ticket:** A usuária Rosangela Cruz solicita a liberação de acesso para a usuária katia.farias@luft.com.br no módulo de Compras (Módulo 2), especificamente para a rotina de Solicitação de Compras.
+
+---
+
+**Orientação para o Analista de TI:**
+
+**Resumo do Problema:** Esta é uma solicitação direta de permissão de acesso a uma rotina específica do Protheus para uma usuária existente.
+
+**Análise e Passo a Passo para o Analista:**
+
+1.  **Acessar o Configurador:** Entrar no sistema Protheus utilizando um usuário com permissões administrativas no módulo **Configurador (SIGACFG)**.
+2.  **Localizar o Usuário:**
+    *   Navegar até `Usuários > Senhas > Usuários`.
+    *   Pesquisar e selecionar o usuário `KATIA.FARIAS` (verificar se o login é exatamente este, pode ser apenas "KATIA.FARIAS" ou outro formato, caso o email seja apenas para referência). *Assumir que a usuária `katia.farias` já existe no cadastro de usuários do Protheus. Se não existir, o primeiro passo seria criar o usuário.*
+3.  **Conceder Acesso ao Menu/Rotina:**
+    *   Após selecionar o usuário `KATIA.FARIAS`, procurar a opção para gerenciar o **Acesso ao Menu** ou **Permissões de Rotina** (o nome exato da opção pode variar ligeiramente dependendo da versão do Protheus). Geralmente, há um botão ou submenu associado ao cadastro do usuário.
+    *   Na árvore de menus do Protheus, navegar até o caminho da rotina de **Solicitação de Compras** dentro do **Módulo 2 - Compras (SIGACOM)**. O caminho padrão é geralmente algo como `Compras > Atualizações > Pedidos > Solicitação de Compras`. O analista pode precisar consultar a estrutura de menu (`Ambiente > Menu > Menus`) para encontrar o caminho exato no ambiente da Luft.
+    *   Marcar a opção ou flag que concede acesso a esta rotina para o usuário `KATIA.FARIAS`.
+4.  **Verificar Acesso por Empresa/Filial:** No cadastro do usuário `KATIA.FARIAS`, verificar também a opção de `Acessos` ou `Empresas/Filiais`. Garantir que o usuário tenha permissão para acessar a(s) empresa(s) e filial(is) onde precisará realizar as solicitações de compra.
+5.  **Salvar Alterações:** Gravar as configurações de acesso do usuário.
+6.  **Informar a Usuária:** Notificar a usuária `katia.farias` (e opcionalmente `rosangela.cruz` que solicitou) que o acesso à rotina de Solicitação de Compras foi liberado.
+
+**Como Esclarecer a Dúvida para o Usuário (pelo Analista):**
+
+Entrar em contato com Katia Farias (e/ou responder ao ticket informando Rosangela Cruz) confirmando que o acesso à rotina de Solicitação de Compras no Módulo de Compras foi liberado para o usuário `katia.farias`. Informar o caminho completo no menu do Protheus para que ela possa encontrar e acessar a rotina (Ex: "Você pode acessar a rotina no menu: Compras > Atualizações > Pedidos > Solicitação de Compras").
+
+---
+
+Espero que esta análise e as orientações detalhadas ajudem a equipe de Helpdesk da Luft a atuar nos tickets de forma eficiente. Lembrem-se de sempre confirmar os detalhes com os usuários quando necessário e consultar a documentação oficial da TOTVS ou a Base de Conhecimento interna para procedimentos técnicos específicos, especialmente ao realizar alterações de dicionário de dados ou avaliar a necessidade de customização.
