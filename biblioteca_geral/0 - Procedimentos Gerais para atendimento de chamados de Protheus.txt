@@ -1,0 +1,15 @@
+# Procedimentos Gerais para atendimento de chamados de Protheus
+
+## ASSUNTO: Autorizar alteração de pedido de compras lançado por outro colaborador.
+### QUANDO: Necessário quando o colaborador que incluiu o pedido de compras está de férias, afastado ou foi desligado da empresa.
+### PROCEDIMENTO: Ajustar o parâmetro MV_RESTPED na filial em que o pedido de compras foi incluído. Quando preenchido com S o parâmetro torna a alteração de pedidos de compras restrito ao login que incluiu o pedido de compras no Protheus, quando preenchido com N torna a alteração de pedidos irrestrito, ou seja, qualquer login pode fazer alteração no pedido de compras. Após o usuário que abriu o chamado realizar a alteração desejada no pedido de compras, deve avisar o departamento de TI para que o parâmetro seja ajustado para restrito novamente.
+
+## ASSUNTO: estornar eliminação de resíduo do pedido de compra ou autorização de entrega.
+### QUANDO: Quando a equipe de Compras roda a rotina de Eliminação de Resíduos para Pedidos de Compras ou Autorizações de Entrega que na verdade não deveríam ter Resíduos Eliminados.
+### PROCEDIMENTO: Neste caso, a equipe de Compras abre um chamado para o time de TI solicitando a liberação para estornar eliminação de resíduo do pedido de compra, através de uma rotina customizada desenvolvida em ADVPL e cujo nome é LCOMA002. O time de TI deve ajustar os seguintes parâmetros no dicionário de dados (SX6) da empresa em que os pedidos de Compras foram lançados:
+LF_ESTRES1: Codigo dos usuários que poderão estornar os pedidos de compras
+LF_ESTRES2: Período inicial de emissão dos pedidos que poderão ser estornados
+LF_ESTRES3: Período final de emissão dos pedidos que poderão ser estornados
+LF_ESTRES4: Data limite para ser feito estorno dos pedidos
+Desse modo, a equipe de Compras deve informar os dados pertinentes a cada um dos parâmetros, para que o time de TI possa ajustá-los. A partir de então, a rotina LCOMA002 poderá ser utilizada para estornar eliminação de resíduo do pedido de compra ou autorizações de entrega relacionadas ao chamado.
+
