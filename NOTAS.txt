@@ -1,0 +1,72 @@
+#------------------------------------------------------------------
+# PARA RESOLVER O PROBLEMA EM QUE O POWERSHELL IMPEDE A ATIVAÇÃO
+# DO AMBIENTE VIRTUAL:
+1: Abrir o PowerShell como Admin;
+2: Set-ExecutionPolicy RemoteSigned (confirmar com A, que salva para todo o computador)
+3: Reabrir o VS Code
+
+#------------------------------------------------------------------
+# PARA ATUALIZAR O PIP 
+# python.exe -m pip install --upgrade pip
+#------------------------------------------------------------------
+
+#------------------------------------------------------------------
+# PARA INSTALAR TODAS AS BIBLIOTECAS LISTAS EM requirements.txt
+# use o comando: pip install -r requirements.txt
+# Dica: para criar ou atualizar o arquivo requirements.txt use
+# o comando: pip freeze > requirements.txt
+#------------------------------------------------------------------
+
+#------------------------------------------------------------------
+# PARA CRIAR E ATIVAR E EXCLUIR UM AMBIENTE VIRTUAL PELO CMD
+#
+#Excluir: rmdir /s /q nome_do_ambiente
+#Criar: python -m venv nome_do_ambiente
+#Ativar: .\ambiente_virtual\Scripts\activate
+#Desativar: deactivate
+
+
+#------------------------------------------------------------------
+# PARA SUBIR PROJETO NO GIT
+#
+https://github.com/ederspvg/NOME_DO_REPOSITORIO
+
+git init
+git add .
+git commit -m "Commit inicial do projeto"
+Crie o repositório no GitHub usando a interface do GitHub.
+git remote add origin https://github.com/ederspvg/nome_do_repositorio.git
+git push -u origin main
+
+Após isso:
+Sua identidade
+A primeira coisa que você deve fazer ao instalar o Git é definir seu nome de usuário e endereço de e-mail. Isso é importante porque cada commit do Git usa essas informações, e elas são imutavelmente incorporadas aos commits que você começa a criar:
+
+git config --global user.name "******"
+git config --global user.email *******@gmail.com
+
+Para atualizar:
+
+git status (mostra as mudanças)
+git add . (prepara as mudanças para o commit)
+git commit -m "Sua mensagem de commit aqui"
+git push origin main (Envie as alterações para o GitHub)
+
+git status
+git add . 
+git commit -m "Sua mensagem de commit aqui"
+git push origin main 
+
+#-----------------------------------------------------------------------
+# CHAVE SERP API
+#
+Para criar uma chave para a api do Google Search, acesso o site abaixo 
+e crie uma conta no plano gratuito:
+https://serpapi.com/dashboard
+
+Depois de criar uma chave, configure-a no ambiente.env 
+
+#------------------------------------------------------------------------
+# STREAMLIT
+#
+Para abrir o streamlit: streamlit run app.py (ou o nome do script.py que for)

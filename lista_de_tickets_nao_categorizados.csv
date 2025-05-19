@@ -1,0 +1,29 @@
+ID do Ticket;Data;Assunto;Descrição;Cidade;UF;País;Fone;Ramal;Email;Categoria Atual;Serviço Atual;Tarefa Atual;SLA Atual;Grau de Dificuldade;Departamento do Usuário;Departamento Técnico;Empresa;Nome do Usuário;Anexos
+6627;2025-04-08 11:43:20;ENVIO PADRÃO CAPA DE FATURA - CLIENTE BRAVO; Bom dia,     Gostaria de solicitar a customização do processo para envio das capas de faturas para o cliente BRAVO SERVIÇOS.  Atualmente, o envio é realizado manualmente todas as segundas-feiras, seguindo uma nomenclatura específica. No entanto, esse processo manual aumenta o ri...;Barueri;São Paulo;Brasil;1147724239;4239;milena.silva@luftagro.com.br;Protheus;Módulo Financeiro;Contas a Receber;40;medium;Contas a Receber;TI Sistemas;Corporativo;Milena da Silva Oliveira;"O anexo contém informações sobre uma fatura da Luft Logistics para a Bravo Serviços Logísticos Ltda.
+
+Resumo:
+
+   Emitente: Luft Logistics
+   Cliente: Bravo Serviços Logísticos LTDA
+   Valor da Fatura: R$ 16.306,98
+   Número da Fatura/Duplicata: 000401523
+   Data de Emissão: 07/04/25
+   Data de Vencimento: 09/07/25
+   CNPJ do Emitente: 87.689.402/0101-96
+   CNPJ do Cliente: 00.950.001/0016-83
+   Inscrição Estadual do Emitente: 295067837
+   Inscrição Estadual do Cliente: 294899499
+   Local de Pagamento: Araguaína - TO
+   Serviços: Prestados, conforme conhecimentos relacionados.
+   Quantidade de Conhecimentos (CTRC/NF): 1
+   CTRC/NF: 0-000009406
+   Total dos Fretes: 16.306,98
+
+Informações Adicionais:
+
+   Há dados sobre a matriz da Luft Logistics em Barueri - SP.
+   Há uma sequência longa de números e símbolos após o valor do frete, que podem ser códigos internos ou referências a algum sistema de rastreamento/controle.
+"
+6648;2025-04-09 11:03:25;Erro Baixa de Ativo; Olá, tudo bem?     Estamos tentando realizar a baixa de um item do Ativo, mas ao tentar realizar a baixa é exibida mensagem de impedimento informando que não foi baixado 100% em todos os itens, mesmo com todos os campos de percentual preenchidos.  Seguem dados:     ...;;;;;2860;lucas.soares;Protheus;Módulo Contabilidade Gerencial;Movimentos;80;low;Contabilidade;TI Sistemas;Corporativo;Lucas de Almeida Soares;
+6917;2025-04-29 11:21:01;Solicitação ND - Modulo Compras; Bom dia,     Gostaríamos de solicitar a verificação do campo onde inserimos as informações da conta bancária nas solicitações de Notas de Debito (ND).  Após a emissão, notamos que as informações na observação estão incompletas.  Caso o problema esteja relacionado à quantida...;Barueri;São Paulo;Brasil;1147724239;4239;milena.silva@luftagro.com.br;Protheus;Módulo Compras;Outros;8;mediun;Contas a Receber;TI Sistemas;Corporativo;Milena da Silva Oliveira;
+6922;2025-04-29 15:49:12;Liberação de acesso para usuário no módulo 2 compras; Liberação de acesso para usuário: katia.farias@luft.com.br no módulo 2 compras, solicitação de compras ;;;;(11) 99705-4999;3830;rosangela.cruz@luft.com.br;Protheus;Módulo Compras;Solicitação de Compras;80;low;Manutenção;TI Sistemas;Agro;Rosângela Datti Lopes da Cruz;
